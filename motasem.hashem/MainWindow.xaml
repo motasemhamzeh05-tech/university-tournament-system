@@ -1,0 +1,177 @@
+﻿<Window x:Class="motasem.hashem.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:motasem.hashem"
+        mc:Ignorable="d"
+        Title="Events" Height="500" Width="800">
+    <Grid>
+        <TabControl Margin="10">
+
+            <!-- ================= TAB 1 : DATA ENTRY ================= -->
+            <TabItem Header="Data Entry">
+                <StackPanel Margin="10" VerticalAlignment="Top">
+
+                    <!-- status message -->
+                    <TextBlock Name="txtStatus"
+                               Margin="5"
+                               Text="Ready"
+                               Foreground="Green"
+                               FontWeight="Bold"/>
+
+                    <!-- ===== Individuals Section ===== -->
+                    <GroupBox Header="Individuals" Margin="5">
+                        <StackPanel>
+
+                            <TextBox Name="txtIndividualName"
+                                     Width="200"
+                                     Margin="5"
+                                     Text="Enter individual name"
+                                     ToolTip="Type the individual's full name, then click 'Add Individual'"/>
+
+                            <StackPanel Margin="5">
+                                <Button x:Name="btnAddIndividual" Content="Add Individual"
+                                        Width="140"
+                                        Margin="0,0,0,5"
+                                        Click="AddIndividual_Click"
+                                        ToolTip="Adds the individual to the participant list (max 20)."/>
+                                <CheckBox Name="chkIndividualSingleEvent" Content="Single event only"
+                                          ToolTip="Check if this individual will participate in only one event."/>
+                                <Button x:Name="btnDeleteIndividual" Content="Delete Individual"
+                                        Width="140"
+                                        Margin="0,5,0,0"
+                                        Click="DeleteIndividual_Click"
+                                        ToolTip="Select an individual from the list and click to remove them."/>
+                                <TextBlock Name="lblIndividualCount" Margin="0,5,0,0" Text="Individuals: 0/20" />
+                            </StackPanel>
+
+                            <ListBox Name="lstIndividuals"
+                                     Height="100"
+                                     Margin="5"
+                                     ToolTip="Select an individual from this list to edit or delete."/>
+                        </StackPanel>
+                    </GroupBox>
+
+                    <!-- ===== Teams Section ===== -->
+                    <GroupBox Header="Teams" Margin="5">
+                        <StackPanel>
+
+                            <!-- Teams are predefined; user cannot add team names -->
+
+
+                            <StackPanel Margin="5">
+
+                                <CheckBox Name="chkTeamSingleEvent" Content="Single event only"/>
+                                <TextBlock Name="lblTeamCount" Margin="0,5,0,0" Text="Teams: 0/4" />
+                            </StackPanel>
+
+                            <ListBox Name="lstTeams"
+                                     Height="100"
+                                     Margin="5"
+                                     SelectionChanged="LstTeams_SelectionChanged"/>
+                            <TextBlock Name="lblTeamMembersCount" Margin="5,0,5,0" Text="Members: 0/5" />
+                            <StackPanel Margin="5">
+                                <TextBox Name="txtMemberName" Width="200" Margin="0,0,0,5" Text=""
+                                         ToolTip="Type member name then click 'Add Member' (max 5 per team)."/>
+                                <Button x:Name="btnAddMember" Content="Add Member" Width="120" Click="AddMember_Click"
+                                        ToolTip="Adds the typed name to the selected team."/>
+                                <!-- Delete Team button removed -->
+                            </StackPanel>
+                        </StackPanel>
+                    </GroupBox>
+
+                    <!-- ===== Events Section ===== -->
+                    <GroupBox Header="Event Results" Margin="5">
+                        <StackPanel>
+
+                            <ComboBox Name="cmbEventName"
+                                      Width="200"
+                                      Margin="5"
+                                      SelectedIndex="0">
+                                <ComboBoxItem Content="Events" IsEnabled="False"/>
+                                <ComboBoxItem Content="1"/>
+                                <ComboBoxItem Content="2"/>
+                                <ComboBoxItem Content="3"/>
+                                <ComboBoxItem Content="4"/>
+                                <ComboBoxItem Content="5"/>
+                            </ComboBox>
+
+                            <ComboBox Name="cmbEventType"
+                                      Width="150"
+                                      Margin="5"
+                                      SelectedIndex="0"
+                                      ToolTip="Choose whether the result is for an individual or a team.">
+                                <ComboBoxItem Content="Individual"/>
+                                <ComboBoxItem Content="Team"/>
+                            </ComboBox>
+
+                            <TextBox Name="txtPosition"
+                                     Width="100"
+                                     Margin="5"
+                                     Text="Position"
+                                     ToolTip="Enter the finishing position as a number (1-5)."/>
+
+                            <Button Content="Record Result"
+                                    Width="150"
+                                    Margin="5"
+                                    Click="RecordResult_Click"
+                                    ToolTip="Record the result for the selected team or individual."/>
+
+                            <Button x:Name="btnResetSystem" Content="Reset System"
+                                    Width="150"
+                                    Margin="5"
+                                    Click="ResetSystem_Click"/>
+
+                        </StackPanel>
+                    </GroupBox>
+
+                </StackPanel>
+            </TabItem>
+
+            <!-- ================= TAB 2 : RESULTS ================= -->
+            <TabItem Header="Results">
+                <Grid Margin="10">
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Buttons: Reset Results and Delete Results (stacked) -->
+                    <StackPanel Orientation="Vertical"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Margin="5"
+                                Panel.ZIndex="1"
+                                Visibility="Visible">
+                        <Button x:Name="btnDeleteResults"
+                                Content="Delete Results"
+                                Width="120"
+                                Height="28"
+                                Click="DeleteResults_Click"
+                                ToolTip="Delete saved results file and clear points."/>
+                    </StackPanel>
+
+                    <!-- ===== Team Results ===== -->
+                    <GroupBox Header="Team Rankings" Margin="5">
+                        <DataGrid Name="dgTeamResults"
+                                  AutoGenerateColumns="True"
+                                  Margin="5"/>
+                    </GroupBox>
+
+                    <!-- ===== Individual Results ===== -->
+                    <GroupBox Header="Individual Rankings"
+                              Grid.Row="1"
+                              Margin="5">
+                        <DataGrid Name="dgIndividualResults"
+                                  AutoGenerateColumns="True"
+                                  Margin="5"/>
+                    </GroupBox>
+
+                </Grid>
+            </TabItem>
+
+        </TabControl>
+    </Grid>
+</Window>
